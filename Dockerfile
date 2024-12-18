@@ -14,5 +14,5 @@ COPY . .
 # Expose the port your app runs on
 EXPOSE 8501
 
-# Set default command to run the app
-CMD ["streamlit", "run", "scripts/dashboard.py"]
+# # Set default command to run the app
+# CMD ["streamlit", "run", "scripts/dashboard.py"]
