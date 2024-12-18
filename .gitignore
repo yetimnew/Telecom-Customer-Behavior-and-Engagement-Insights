@@ -1,6 +1,4 @@
 # Exclude all .git-related files, but include .github
-!.github/
-!.github/**
 ai_env/
 
 .vscode/
