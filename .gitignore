@@ -1,0 +1,19 @@
+# Exclude all .git-related files, but include .github
+!.github/
+!.github/**
+ai_env/
+
+.vscode/
+.idea/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Other temporary files
+*.tmp
+*.bak
+*.swp
+
+# Ignore large CSV files
+data
+.github
