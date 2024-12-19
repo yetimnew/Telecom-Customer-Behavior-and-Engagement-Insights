@@ -1,6 +1,4 @@
 # Exclude all .git-related files, but include .github
-ai_env/
-
 .vscode/
 .idea/
 
@@ -13,6 +11,6 @@ ai_env/
 *.swp
 
 # Ignore large CSV files
-data
+Data
 .github
 .env
