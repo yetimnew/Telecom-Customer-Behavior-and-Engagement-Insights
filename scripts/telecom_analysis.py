@@ -63,46 +63,31 @@ class TelecomAnalysis:
         else:
             print("No data loaded.")
 
-    def find_top_handsets_per_manufacturer(self, manufacturers, n=5):
+    def find_top_handsets_per_manufacturer(self, n=5):
         """
-        Identify the top N handsets for each manufacturer.
+        Identify the top N handsets for each of the top manufacturers.
         """
         if self.data is not None:
             if 'Handset Manufacturer' in self.data.columns and 'Handset Type' in self.data.columns:
-                result = {}
-                for manufacturer in manufacturers:
-                    top_handsets = (
-                        self.data[self.data['Handset Manufacturer'] == manufacturer]['Handset Type']
-                        .value_counts()
-                        .head(n)
-                    )
-                    result[manufacturer] = top_handsets
-                return result
+                # Identify top manufacturers
+                top_manufacturers = self.find_top_manufacturers(n=3)
+                if top_manufacturers is not None:
+                    result = {}
+                    for manufacturer in top_manufacturers.index:
+                        # Find top handsets for each manufacturer
+                        top_handsets = (
+                            self.data[self.data['Handset Manufacturer'] == manufacturer]['Handset Type']
+                            .value_counts()
+                            .head(n)
+                        )
+                        result[manufacturer] = top_handsets
+                        print(f"\nTop {n} Handsets for Manufacturer {manufacturer}:\n", top_handsets)
+                    return result
+                else:
+                    print("No top manufacturers found.")
+                    return None
             else:
                 print("Required columns not found: 'Handset Manufacturer' or 'Handset Type'.")
                 return None
-        else:
-            print("No data loaded.")
-
-    def aggregate_user_metrics(self):
-        """
-        Aggregate per user: number of xDR sessions, total download/upload data, total data volume,
-        and average session duration.
-        """
-        if self.data is not None:
-            # Use the exact column names from the dataset
-            if 'MSISDN/Number' in self.data.columns:
-                user_metrics = self.data.groupby('MSISDN/Number').agg(
-                    total_sessions=('bearer id', 'count'),  # Ensure 'bearer id' exists
-                    total_download=('Total DL (Bytes)', 'sum'),  # Ensure 'Total DL (Bytes)' exists
-                    total_upload=('Total UL (Bytes)', 'sum'),  # Ensure 'Total UL (Bytes)' exists
-                    total_data_volume=('Total DL (Bytes)', 'sum'),  # Same as total_download
-                    average_duration=('Dur. (s)', 'mean')  # Ensure 'Dur. (s)' exists
-                )
-                print("\nAggregated User Metrics:")
-                print(user_metrics.head())
-                return user_metrics
-            else:
-                print("Column 'MSISDN/Number' not found in the dataset.")
         else:
             print("No data loaded.")
