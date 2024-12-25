@@ -167,3 +167,74 @@ def calculate_duplicate_percentage(data, column_name):
     duplicate_percentage = (duplicate_rows / total_rows) * 100
     
     return duplicate_percentage
+def retain_relevant_columns(data, columns):
+    """
+    Retains only the specified columns in the DataFrame.
+
+    Args:
+        data (pd.DataFrame): The input DataFrame.
+        columns (list): List of column names to retain.
+
+    Returns:
+        pd.DataFrame: The DataFrame with only the specified columns.
+    """
+    return data[[col for col in columns if col in data.columns]]
+def add_total_data_volume(data, dl_column="total_dl__bytes", ul_column="total_ul__bytes"):
+    """
+    Adds a derived column for total data volume (DL + UL).
+
+    Args:
+        data (pd.DataFrame): The input DataFrame.
+        dl_column (str): The column name for download data volume.
+        ul_column (str): The column name for upload data volume.
+
+    Returns:
+        pd.DataFrame: The DataFrame with a new column 'total_data_volume'.
+    """
+    if dl_column not in data.columns or ul_column not in data.columns:
+        raise ValueError("DL or UL column not found in the DataFrame.")
+    
+    data["total_data_volume"] = data[dl_column] + data[ul_column]
+    return data
+def add_total_data_volume(data, dl_column="total_dl__bytes", ul_column="total_ul__bytes"):
+    """
+    Adds a derived column for total data volume (DL + UL).
+
+    Args:
+        data (pd.DataFrame): The input DataFrame.
+        dl_column (str): The column name for download data volume.
+        ul_column (str): The column name for upload data volume.
+
+    Returns:
+        pd.DataFrame: The DataFrame with a new column 'total_data_volume'.
+    """
+    if dl_column not in data.columns or ul_column not in data.columns:
+        raise ValueError("DL or UL column not found in the DataFrame.")
+    
+    data["total_data_volume"] = data[dl_column] + data[ul_column]
+    return data
+def rename_columns(data, rename_map):
+    """
+    Renames columns based on a provided mapping.
+
+    Args:
+        data (pd.DataFrame): The input DataFrame.
+        rename_map (dict): Dictionary mapping old column names to new names.
+
+    Returns:
+        pd.DataFrame: The DataFrame with renamed columns.
+    """
+    return data.rename(columns=rename_map, inplace=False)
+def handle_missing_values_in_columns(data, strategy="mean", columns=None):
+    """
+    Handles missing values in specific columns using a specified strategy.
+
+    Args:
+        data (pd.DataFrame): The input DataFrame.
+        strategy (str): Strategy to handle missing values ('mean', 'median', 'drop').
+        columns (list): List of columns to handle missing values. If None, applies to all.
+
+    Returns:
+        pd.DataFrame: The DataFrame with missing values handled.
+    """
+    return handle_missing_values(data, strategy=strategy, columns=columns)
